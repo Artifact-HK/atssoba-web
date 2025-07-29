@@ -1,0 +1,204 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String    @id @default(cuid())
+  email             String    @unique
+  password          String
+  name              String
+  chineseName       String?
+  graduationYear    Int?
+  profileImage      String?
+  currentJob        String?
+  company           String?
+  industry          String?
+  location          String?
+  region            String?
+  bio               String?
+  linkedIn          String?
+  facebook          String?
+  instagram         String?
+  website           String?
+  isActive          Boolean   @default(true)
+  isMentor          Boolean   @default(false)
+  isAdmin           Boolean   @default(false)
+  emailVerified     DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  // Relations
+  stories           Story[]
+  eventRegistrations EventRegistration[]
+  donations         Donation[]
+  sentMessages      Message[] @relation("SentMessages")
+  receivedMessages  Message[] @relation("ReceivedMessages")
+  jobPosts          JobPost[]
+  mentorshipRequests MentorshipRequest[] @relation("MentorshipMentor")
+  menteeRequests    MentorshipRequest[] @relation("MentorshipMentee")
+  comments          Comment[]
+
+  @@map("users")
+}
+
+model Story {
+  id          String    @id @default(cuid())
+  title       String
+  content     String
+  excerpt     String?
+  image       String?
+  isPublished Boolean   @default(false)
+  isFeatured  Boolean   @default(false)
+  authorId    String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relations
+  author      User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  comments    Comment[]
+
+  @@map("stories")
+}
+
+model Event {
+  id          String    @id @default(cuid())
+  title       String
+  description String
+  startDate   DateTime
+  endDate     DateTime?
+  location    String?
+  isVirtual   Boolean   @default(false)
+  virtualLink String?
+  image       String?
+  maxAttendees Int?
+  price       Float     @default(0)
+  isPublished Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relations
+  registrations EventRegistration[]
+
+  @@map("events")
+}
+
+model EventRegistration {
+  id        String   @id @default(cuid())
+  userId    String
+  eventId   String
+  status    String   @default("registered") // registered, attended, cancelled
+  createdAt DateTime @default(now())
+
+  // Relations
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, eventId])
+  @@map("event_registrations")
+}
+
+model JobPost {
+  id          String    @id @default(cuid())
+  title       String
+  company     String
+  location    String?
+  description String
+  requirements String?
+  salary      String?
+  isRemote    Boolean   @default(false)
+  contactEmail String
+  isActive    Boolean   @default(true)
+  postedById  String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relations
+  postedBy    User      @relation(fields: [postedById], references: [id], onDelete: Cascade)
+
+  @@map("job_posts")
+}
+
+model MentorshipRequest {
+  id        String   @id @default(cuid())
+  mentorId  String
+  menteeId  String
+  message   String?
+  status    String   @default("pending") // pending, accepted, declined, completed
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  mentor    User     @relation("MentorshipMentor", fields: [mentorId], references: [id], onDelete: Cascade)
+  mentee    User     @relation("MentorshipMentee", fields: [menteeId], references: [id], onDelete: Cascade)
+
+  @@unique([mentorId, menteeId])
+  @@map("mentorship_requests")
+}
+
+model Message {
+  id         String   @id @default(cuid())
+  senderId   String
+  receiverId String
+  subject    String?
+  content    String
+  isRead     Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  // Relations
+  sender     User     @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+
+  @@map("messages")
+}
+
+model Donation {
+  id          String   @id @default(cuid())
+  donorId     String?
+  amount      Float
+  currency    String   @default("HKD")
+  purpose     String?  // scholarship, facilities, general
+  isRecurring Boolean  @default(false)
+  stripePaymentId String?
+  status      String   @default("pending") // pending, completed, failed, refunded
+  donorName   String?
+  donorEmail  String?
+  isAnonymous Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  // Relations
+  donor       User?    @relation(fields: [donorId], references: [id], onDelete: SetNull)
+
+  @@map("donations")
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String
+  storyId   String
+  authorId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  story     Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@map("comments")
+}
+
+model Newsletter {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  @@map("newsletters")
+}
