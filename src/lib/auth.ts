@@ -14,7 +14,12 @@ export async function createUser(data: {
   password: string
   name: string
   chineseName?: string
+  nickname?: string
   graduationYear?: number
+  phone?: string
+  skills?: string
+  hobby?: string
+  closeTeacher?: string
 }) {
   const hashedPassword = await hashPassword(data.password)
   
@@ -28,7 +33,12 @@ export async function createUser(data: {
       email: true,
       name: true,
       chineseName: true,
+      nickname: true,
       graduationYear: true,
+      phone: true,
+      skills: true,
+      hobby: true,
+      closeTeacher: true,
       createdAt: true,
     },
   })
@@ -43,7 +53,12 @@ export async function getUserByEmail(email: string) {
       password: true,
       name: true,
       chineseName: true,
+      nickname: true,
       graduationYear: true,
+      phone: true,
+      skills: true,
+      hobby: true,
+      closeTeacher: true,
       isAdmin: true,
       isActive: true,
     },
@@ -58,6 +73,7 @@ export async function getUserById(id: string) {
       email: true,
       name: true,
       chineseName: true,
+      nickname: true,
       graduationYear: true,
       profileImage: true,
       currentJob: true,
@@ -66,9 +82,14 @@ export async function getUserById(id: string) {
       location: true,
       region: true,
       bio: true,
+      skills: true,
+      hobby: true,
+      phone: true,
+      closeTeacher: true,
       linkedIn: true,
       facebook: true,
       instagram: true,
+      wechat: true,
       website: true,
       isActive: true,
       isMentor: true,

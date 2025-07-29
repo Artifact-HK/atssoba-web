@@ -4,12 +4,13 @@ import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Search, Filter, MapPin, Briefcase, Calendar, Mail, Linkedin, Facebook } from 'lucide-react'
+import { Search, Filter, MapPin, Briefcase, Calendar, Mail, Linkedin, Facebook, Phone, User, Heart, MessageCircle, GraduationCap, Award, Gamepad2 } from 'lucide-react'
 
 interface Member {
   id: string
   name: string
   chineseName?: string
+  nickname?: string
   graduationYear?: number
   currentJob?: string
   company?: string
@@ -17,8 +18,17 @@ interface Member {
   location?: string
   region?: string
   profileImage?: string
+  bio?: string
+  skills?: string
+  hobby?: string
+  phone?: string
+  email?: string
+  closeTeacher?: string
   linkedIn?: string
   facebook?: string
+  instagram?: string
+  wechat?: string
+  website?: string
 }
 
 export default function MembersPage() {
@@ -32,13 +42,14 @@ export default function MembersPage() {
   })
   const [isLoading, setIsLoading] = useState(true)
 
-  // Mock data - replace with actual API call
+  // Enhanced mock data with all new fields
   useEffect(() => {
     const mockMembers: Member[] = [
       {
         id: '1',
         name: 'John Chan',
         chineseName: '陳志明',
+        nickname: 'Johnny',
         graduationYear: 1995,
         currentJob: 'Software Engineer',
         company: 'Tech Corp HK',
@@ -46,12 +57,21 @@ export default function MembersPage() {
         location: 'Hong Kong',
         region: 'Hong Kong Island',
         profileImage: '/api/placeholder/150/150',
+        bio: 'Passionate software engineer with 25+ years of experience in web development and system architecture. Love mentoring junior developers.',
+        skills: 'JavaScript, Python, React, Node.js, AWS, Docker',
+        hobby: 'Photography, Hiking, Reading tech blogs',
+        phone: '+852 9123 4567',
+        email: 'john.chan@techcorp.hk',
+        closeTeacher: 'Mr. Wong Siu Ming (Computer Science)',
         linkedIn: 'https://linkedin.com/in/johnchan',
+        facebook: 'https://facebook.com/johnchan95',
+        wechat: 'johnchan_hk',
       },
       {
         id: '2',
         name: 'Mary Wong',
         chineseName: '黃美玲',
+        nickname: 'Mary',
         graduationYear: 1988,
         currentJob: 'Civil Engineer',
         company: 'Infrastructure Ltd',
@@ -59,11 +79,20 @@ export default function MembersPage() {
         location: 'Hong Kong',
         region: 'Kowloon',
         profileImage: '/api/placeholder/150/150',
+        bio: 'Senior civil engineer specializing in bridge and tunnel construction. Proud to contribute to Hong Kong\'s infrastructure development.',
+        skills: 'AutoCAD, Structural Design, Project Management, BIM',
+        hobby: 'Badminton, Cooking, Volunteering',
+        phone: '+852 9234 5678',
+        email: 'mary.wong@infrastructure.hk',
+        closeTeacher: 'Ms. Lee Wai Ling (Mathematics)',
+        facebook: 'https://facebook.com/marywong88',
+        wechat: 'mary_wong_hk',
       },
       {
         id: '3',
         name: 'David Lee',
         chineseName: '李偉強',
+        nickname: 'Dave',
         graduationYear: 2001,
         currentJob: 'Manufacturing Manager',
         company: 'Production Systems',
@@ -71,12 +100,20 @@ export default function MembersPage() {
         location: 'Shenzhen',
         region: 'Mainland China',
         profileImage: '/api/placeholder/150/150',
-        facebook: 'https://facebook.com/davidlee',
+        bio: 'Manufacturing expert with focus on lean production and quality control. Always looking for ways to optimize processes.',
+        skills: 'Lean Manufacturing, Six Sigma, Quality Control, SAP',
+        hobby: 'Golf, Chess, Model building',
+        phone: '+86 138 0013 8888',
+        email: 'david.lee@production.cn',
+        closeTeacher: 'Mr. Chan Tai Man (Industrial Arts)',
+        facebook: 'https://facebook.com/davidlee2001',
+        wechat: 'davidlee_sz',
       },
       {
         id: '4',
         name: 'Sarah Lam',
         chineseName: '林淑儀',
+        nickname: 'Sarah',
         graduationYear: 2005,
         currentJob: 'Project Manager',
         company: 'Global Solutions',
@@ -84,12 +121,21 @@ export default function MembersPage() {
         location: 'Singapore',
         region: 'Southeast Asia',
         profileImage: '/api/placeholder/150/150',
+        bio: 'International project manager with expertise in digital transformation and change management across Asia-Pacific.',
+        skills: 'Project Management, Agile, Scrum, Digital Strategy',
+        hobby: 'Yoga, Travel, Food blogging',
+        phone: '+65 9876 5432',
+        email: 'sarah.lam@globalsolutions.sg',
+        closeTeacher: 'Ms. Cheung Mei Fong (English)',
         linkedIn: 'https://linkedin.com/in/sarahlam',
+        instagram: 'https://instagram.com/sarahlam_sg',
+        wechat: 'sarah_lam_sg',
       },
       {
         id: '5',
         name: 'Michael Cheng',
         chineseName: '鄭志華',
+        nickname: 'Mike',
         graduationYear: 1992,
         currentJob: 'Electrical Engineer',
         company: 'Power Systems HK',
@@ -97,11 +143,20 @@ export default function MembersPage() {
         location: 'Hong Kong',
         region: 'New Territories',
         profileImage: '/api/placeholder/150/150',
+        bio: 'Electrical engineer specializing in power distribution systems and renewable energy solutions for Hong Kong.',
+        skills: 'Electrical Design, Power Systems, AutoCAD Electrical, PLC',
+        hobby: 'Electronics DIY, Cycling, Classical music',
+        phone: '+852 9345 6789',
+        email: 'michael.cheng@powersystems.hk',
+        closeTeacher: 'Mr. Lau Kam Wah (Physics)',
+        linkedIn: 'https://linkedin.com/in/michaelcheng',
+        wechat: 'mike_cheng_hk',
       },
       {
         id: '6',
         name: 'Lisa Tang',
         chineseName: '鄧麗莎',
+        nickname: 'Lisa',
         graduationYear: 1999,
         currentJob: 'Quality Assurance Manager',
         company: 'Manufacturing Excellence',
@@ -109,7 +164,16 @@ export default function MembersPage() {
         location: 'Hong Kong',
         region: 'Hong Kong Island',
         profileImage: '/api/placeholder/150/150',
+        bio: 'Quality assurance professional dedicated to maintaining the highest standards in manufacturing processes.',
+        skills: 'ISO Standards, Quality Management, Statistical Analysis, Auditing',
+        hobby: 'Painting, Gardening, Meditation',
+        phone: '+852 9456 7890',
+        email: 'lisa.tang@manufacturing.hk',
+        closeTeacher: 'Mr. Ho Chun Kit (Chemistry)',
         linkedIn: 'https://linkedin.com/in/lisatang',
+        facebook: 'https://facebook.com/lisatang99',
+        instagram: 'https://instagram.com/lisa_tang_art',
+        wechat: 'lisa_tang_hk',
       },
     ]
 
@@ -121,7 +185,7 @@ export default function MembersPage() {
     }, 1000)
   }, [])
 
-  // Filter and search logic
+  // Enhanced filter and search logic
   useEffect(() => {
     let filtered = members
 
@@ -130,9 +194,13 @@ export default function MembersPage() {
       filtered = filtered.filter(member =>
         member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         member.chineseName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        member.nickname?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         member.company?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         member.currentJob?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        member.industry?.toLowerCase().includes(searchTerm.toLowerCase())
+        member.industry?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        member.skills?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        member.hobby?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        member.closeTeacher?.toLowerCase().includes(searchTerm.toLowerCase())
       )
     }
 
@@ -172,6 +240,11 @@ export default function MembersPage() {
   const industries = Array.from(new Set(members.map(m => m.industry).filter(Boolean)))
   const regions = Array.from(new Set(members.map(m => m.region).filter(Boolean)))
   const graduationYears = Array.from(new Set(members.map(m => m.graduationYear).filter(Boolean))).sort((a, b) => b - a)
+
+  const formatSkills = (skills?: string) => {
+    if (!skills) return []
+    return skills.split(',').map(skill => skill.trim()).slice(0, 4) // Show max 4 skills
+  }
 
   if (isLoading) {
     return (
@@ -216,7 +289,7 @@ export default function MembersPage() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <Input
                 type="text"
-                placeholder="Search by name, company, job title, or industry..."
+                placeholder="Search by name, company, skills, hobbies, or teacher..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
@@ -315,7 +388,12 @@ export default function MembersPage() {
                       {member.name.charAt(0)}
                     </span>
                   </div>
-                  <CardTitle className="text-lg">{member.name}</CardTitle>
+                  <CardTitle className="text-lg">
+                    {member.name}
+                    {member.nickname && (
+                      <span className="text-sm font-normal text-gray-500 ml-2">({member.nickname})</span>
+                    )}
+                  </CardTitle>
                   {member.chineseName && (
                     <CardDescription className="text-sm">{member.chineseName}</CardDescription>
                   )}
@@ -348,6 +426,64 @@ export default function MembersPage() {
                         <span>{member.location}</span>
                       </div>
                     )}
+
+                    {member.phone && (
+                      <div className="flex items-center text-sm text-gray-600">
+                        <Phone className="w-4 h-4 mr-2" />
+                        <span>{member.phone}</span>
+                      </div>
+                    )}
+
+                    {member.closeTeacher && (
+                      <div className="flex items-start text-sm text-gray-600">
+                        <GraduationCap className="w-4 h-4 mr-2 mt-0.5" />
+                        <span>Close Teacher: {member.closeTeacher}</span>
+                      </div>
+                    )}
+
+                    {/* Skills */}
+                    {member.skills && (
+                      <div className="space-y-2">
+                        <div className="flex items-center text-sm font-medium text-gray-700">
+                          <Award className="w-4 h-4 mr-2" />
+                          <span>Skills</span>
+                        </div>
+                        <div className="flex flex-wrap gap-1 ml-6">
+                          {formatSkills(member.skills).map((skill, index) => (
+                            <span key={index} className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
+                              {skill}
+                            </span>
+                          ))}
+                          {member.skills.split(',').length > 4 && (
+                            <span className="inline-block bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full">
+                              +{member.skills.split(',').length - 4} more
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Hobbies */}
+                    {member.hobby && (
+                      <div className="space-y-2">
+                        <div className="flex items-center text-sm font-medium text-gray-700">
+                          <Gamepad2 className="w-4 h-4 mr-2" />
+                          <span>Hobbies</span>
+                        </div>
+                        <p className="text-sm text-gray-600 ml-6">{member.hobby}</p>
+                      </div>
+                    )}
+
+                    {/* Bio */}
+                    {member.bio && (
+                      <div className="space-y-2">
+                        <div className="flex items-center text-sm font-medium text-gray-700">
+                          <User className="w-4 h-4 mr-2" />
+                          <span>About</span>
+                        </div>
+                        <p className="text-sm text-gray-600 ml-6 line-clamp-3">{member.bio}</p>
+                      </div>
+                    )}
                     
                     {member.industry && (
                       <div className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
@@ -356,20 +492,31 @@ export default function MembersPage() {
                     )}
                   </div>
                   
-                  {/* Social Links */}
-                  <div className="flex justify-center space-x-3 mt-4 pt-4 border-t">
-                    <Button size="sm" variant="outline">
-                      <Mail className="w-4 h-4 mr-1" />
-                      Contact
-                    </Button>
+                  {/* Contact & Social Links */}
+                  <div className="flex justify-center space-x-2 mt-6 pt-4 border-t">
+                    {member.email && (
+                      <Button size="sm" variant="outline" title="Email">
+                        <Mail className="w-4 h-4" />
+                      </Button>
+                    )}
                     {member.linkedIn && (
-                      <Button size="sm" variant="outline">
+                      <Button size="sm" variant="outline" title="LinkedIn">
                         <Linkedin className="w-4 h-4" />
                       </Button>
                     )}
                     {member.facebook && (
-                      <Button size="sm" variant="outline">
+                      <Button size="sm" variant="outline" title="Facebook">
                         <Facebook className="w-4 h-4" />
+                      </Button>
+                    )}
+                    {member.instagram && (
+                      <Button size="sm" variant="outline" title="Instagram">
+                        <Heart className="w-4 h-4" />
+                      </Button>
+                    )}
+                    {member.wechat && (
+                      <Button size="sm" variant="outline" title="WeChat">
+                        <MessageCircle className="w-4 h-4" />
                       </Button>
                     )}
                   </div>
